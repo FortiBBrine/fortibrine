@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}{{article.article_title}}{% endblock %}
+
+{% block content %}
+
+<h2 style="background: white; font-size: 125%; font-family: Comic sans MS; color: black; ";>{{article.article_title}}</h2>
+<p>{{article.article_text}}</p>
+
+<em style="background: white; font-size: 125%; font-family: Comic sans MS; color: black; ";>{{article.pub_date}}</em>
+
+{% if article.was_published_recently %}
+<p style="background: white; font-size: 125%; font-family: Comic sans MS; color: black; ";>НОВАЯ СТАТЬЯ</p>
+{% endif %}
+
+<hr>
+<comments style="background: white; font-size: 125%; font-family: Comic sans MS; color: black; ";>Комментарии:</comments><br>
+{% if latest_comments_list %}
+	{% for c in latest_comments_list %}
+		<p>
+			<strong style="background: white; font-size: 120%; font-family: Comic sans MS; color: black; ";>{{c.author_name}}</strong>
+			<p style="background: white; font-size: 120%; font-family: Comic sans MS; color: black; ";>{{c.comment_text}}</p>
+		</p>
+	{% endfor %}
+{% else %}
+<a style="background: white; font-size: 200%; font-family: Comic sans MS; color: black; ";>Комментарии не найдены! Станьте первым ;)</a><br>
+{% endif %}
+
+<hr>
+
+<form action="{% url 'articles:leave_comment' article.id %}" method="POST">
+	{% csrf_token %}
+
+	<input type="text" required placeholder="Ваше имя" name="name"; style="width: 25%; padding: 12px 20px; margin: 8px 0; box-sizing: border-box; font-family: Comic sans MS; ";><br>
+	<textarea name="text" required="" placeholder="Текст комментария" cols="30" rows="10">
+	</textarea><br>
+
+	<button type="submit"; style="background-color: #4CAF50; border: none; color: black; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 20px; font-family: Comic sans MS; ";>Оставить комментарий</button>
+
+</form>
+
+{% endblock %}
